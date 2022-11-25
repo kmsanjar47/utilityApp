@@ -203,14 +203,14 @@ class HomePage extends StatelessWidget {
               ),
               Expanded(
                 child: GridView.builder(
-                    itemCount: Myitems.length,
+                    itemCount: myItems.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2, childAspectRatio: 1 / 2),
                     itemBuilder: (context, index) {
                       return ContentBox(
-                          iconPath: Myitems[index][1],
-                          contentName: Myitems[index][0]);
+                          iconPath: myItems[index][1],
+                          contentName: myItems[index][0]);
                     }),
               ),
             ],

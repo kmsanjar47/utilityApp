@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:versity/pages/home.dart';
 
-List Myitems = [
+List myItems = [
   ["Calculator", "assets/icons/calculator.png"],
   ["Converter", "assets/icons/converter.png"]
 ];
