@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:math_expressions/math_expressions.dart';
+import 'package:versity/models/calc_logic.dart';
 import 'package:versity/utility/CalcBtn.dart';
 
-import 'home.dart';
 
-var userQuestion = "0";
-var userAnswer = "0";
+// var userQuestion = "0";
+// var userAnswer = "0";
+
+CalcLogic calculator = CalcLogic();
+
+
 const List calcItem = [
   ["%"], ["C"], ["AC"], ["/"],
   ["7"], ["8"], ["9"], ["x"],
@@ -35,10 +38,10 @@ class _CalculatorState extends State<Calculator> {
           child: AppBar(
               leading: InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                  setState(() {
+                    calculator.reset();
+                  });
+                  Navigator.pop(context);
                 },
                 child: const Icon(
                   CupertinoIcons.back,
@@ -62,16 +65,11 @@ class _CalculatorState extends State<Calculator> {
                     height: 50,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     width: double.maxFinite,
                     height: 100,
-                    // decoration: BoxDecoration(
-                    //     color: Colors.grey[200],
-                    //     boxShadow: [BoxShadow(color: Colors.black12,blurRadius: 5,offset: Offset(5,5))],
-                    //     // border: Border.all(color: Colors.black12, width: 2),
-                    //     borderRadius: const BorderRadius.all(Radius.circular(20))),
                     child: Text(
-                      "$userQuestion",
+                      calculator.displayQuestion,
                       textAlign: TextAlign.left,
                       style: const TextStyle(color: Colors.black, fontSize: 50),
                     ),
@@ -81,9 +79,9 @@ class _CalculatorState extends State<Calculator> {
                     width: double.maxFinite,
                     height: 50,
                     child: Text(
-                      "$userAnswer",
+                      calculator.displayAnswer,
                       textAlign: TextAlign.right,
-                      style: TextStyle(fontSize: 30, color: Colors.black),
+                      style: const TextStyle(fontSize: 30, color: Colors.black),
                     ),
                   ),
                 ],
@@ -104,31 +102,32 @@ class _CalculatorState extends State<Calculator> {
                         setState(() {
                           try {
                             if (index == 2) {
-                              userQuestion = "0";
-                            } else if (index == 1) {
-                              if (userQuestion.length == 1) {
-                                userQuestion = "0";
-                              } else {
-                                userQuestion = userQuestion.substring(
-                                    0, userQuestion.length - 1);
-                              }
-                            } else if (index == 18) {
-                              userQuestion = userAnswer;
-                            } else if (index == calcItem.length - 1) {
-                              String finalQuestion = userQuestion;
-                              Parser p = Parser();
-                              Expression exp = p.parse(finalQuestion);
-                              ContextModel cm = ContextModel();
-                              double eval =
-                                  exp.evaluate(EvaluationType.REAL, cm);
-                              userAnswer = eval.toString();
-                            } else if (index == 7) {
-                              userQuestion += "*";
-                            } else {
-                              userQuestion += calcItem[index][0];
+                              calculator.buttonAC();
+                              //buttonAC
+                            }
+                            else if (index == 1) {
+                              //buttonC
+                              calculator.buttonC();
+                            }
+                            else if (index == 18) {
+                              //buttonAns
+                              calculator.buttonAns();
+                            }
+                            else if (index == calcItem.length - 1) {
+                              //buttonEqual
+                              calculator.buttonEqual();
+                            }
+                            else if (index == 7) {
+                              //buttonStar
+                              calculator.buttonStar();
+                            }
+                            else {
+                              //buttonPercent
+                              calculator.setQuestion(
+                                  calculator.displayQuestion += calcItem[index][0]);
                             }
                           } catch (e) {
-                            userAnswer = "Input Error";
+                            calculator.setQuestion("Syntax Error");
                           }
                         });
                       },
