@@ -36,6 +36,7 @@ class CalcBtn extends StatelessWidget {
           child: TextButton(
         onPressed: btnTapped,
         style: TextButton.styleFrom(
+          splashFactory: NoSplash.splashFactory,
           foregroundColor: Colors.black,
           textStyle: const TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
         ),

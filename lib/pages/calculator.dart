@@ -4,20 +4,9 @@ import 'package:versity/models/calc_logic.dart';
 import 'package:versity/utility/CalcBtn.dart';
 
 
-// var userQuestion = "0";
-// var userAnswer = "0";
-
 CalcLogic calculator = CalcLogic();
 
-
-const List calcItem = [
-  ["%"], ["C"], ["AC"], ["/"],
-  ["7"], ["8"], ["9"], ["x"],
-  ["4"], ["5"], ["6"], ["+"],
-  ["1"], ["2"], ["3"], ["-"],
-  ["."], ["0"], ["ANS"], ["="],
-  //text
-];
+var calcItem = calculator.getItemList();
 
 class Calculator extends StatefulWidget {
   const Calculator({Key? key}) : super(key: key);
@@ -64,24 +53,31 @@ class _CalculatorState extends State<Calculator> {
                   const SizedBox(
                     height: 50,
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    width: double.maxFinite,
-                    height: 100,
-                    child: Text(
-                      calculator.displayQuestion,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(color: Colors.black, fontSize: 50),
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      width: double.maxFinite,
+                      height: 100,
+                      child: Text(
+                        calculator.displayQuestion,
+                        overflow: TextOverflow.fade,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(color: Colors.black, fontSize: 45),
+                      ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    width: double.maxFinite,
-                    height: 50,
-                    child: Text(
-                      calculator.displayAnswer,
-                      textAlign: TextAlign.right,
-                      style: const TextStyle(fontSize: 30, color: Colors.black),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      width: double.maxFinite,
+                      height: 50,
+                      child: Text(
+                        calculator.displayAnswer,
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(fontSize: 30, color: Colors.black),
+                      ),
                     ),
                   ),
                 ],
@@ -91,7 +87,7 @@ class _CalculatorState extends State<Calculator> {
               height: 20,
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: GridView.builder(
                   itemCount: calcItem.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -122,9 +118,14 @@ class _CalculatorState extends State<Calculator> {
                               calculator.buttonStar();
                             }
                             else {
-                              //buttonPercent
-                              calculator.setQuestion(
-                                  calculator.displayQuestion += calcItem[index][0]);
+                              if(calculator.displayQuestion != "0") {
+                                calculator.setQuestion(
+                                    calculator.displayQuestion += calcItem[index][0]);
+                              }else{
+                                calculator.setQuestion(
+                                    calculator.displayQuestion = calcItem[index][0]);
+                              }
+
                             }
                           } catch (e) {
                             calculator.setQuestion("Syntax Error");
